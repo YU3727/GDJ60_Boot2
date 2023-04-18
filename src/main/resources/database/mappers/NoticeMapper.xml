@@ -4,11 +4,51 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.pooh.base.board.notice.NoticeDAO">
+	
+	<!-- 공통부분 -->
+	<sql id="search">
+		<where>
+			<if test="kind=='title'">
+				TITLE LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="kind=='writer'">
+				WRITER LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="kind=='contents'">
+				CONTENTS LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<!-- totalCount -->
+	<select id="getTotalCount" parameterType="Pager" resultType="Long">
+		SELECT COUNT(NUM) FROM NOTICE
+		<include refid="search"></include>
+	</select>
+
+	<!-- List -->
+	<select id="getList" parameterType="Pager" resultType="NoticeVO">
+		SELECT * FROM NOTICE 
+		<include refid="search"></include>
+		ORDER BY NUM DESC
+		LIMIT #{startRow}, #{perPage}
+	</select>
 
 	<!-- insert -->
-	<insert id="setInsert" parameterType="com.pooh.base.board.BoardVO">
+	<insert id="setInsert" parameterType="BoardVO">
 		INSERT INTO NOTICE(TITLE, CONTENTS, WRITER, REGDATE,  HIT)
 		VALUES(#{title}, #{contents}, #{writer}, now(), 0)
 	</insert>
+	
+	<!-- update -->
+	<update id="setUpdate" parameterType="BoardVO">
+		UPDATE NOTICE SET TITLE=#{title}, CONTENTS=#{contents}, WRITER=#{writer}
+		WHERE NUM=#{num}
+	</update>
+	
+	<!-- delete -->
+	<delete id="setDelete" parameterType="BoardVO">
+		DELETE FROM NOTICE WHERE NUM=#{num}
+	</delete>
   
 </mapper>

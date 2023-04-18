@@ -4,12 +4,8 @@ import java.util.List;
 
 import com.pooh.base.util.Pager;
 
-public interface BoardDAO {
-	//기본 공통작업을 모아둠
-	
-	//전체글 개수 조회
-	public Long getTotalCount(Pager pager) throws Exception;
-	
+public interface BoardService {
+
 	//글전체 조회
 	public List<BoardVO> getList(Pager pager) throws Exception;
 	
@@ -24,5 +20,4 @@ public interface BoardDAO {
 	
 	//글삭제
 	public int setDelete(BoardVO boardVO) throws Exception;
-	
 }

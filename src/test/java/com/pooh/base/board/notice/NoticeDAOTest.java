@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.pooh.base.board.BoardDAO;
 import com.pooh.base.board.BoardVO;
 
 @SpringBootTest
@@ -16,13 +17,45 @@ class NoticeDAOTest { //접근지정자 default라 생략
 	
 	@Test
 	void setInsertTest() throws Exception{
+		for(int i=0; i<120; i++) {
+			BoardVO boardVO = new NoticeVO();
+			
+			boardVO.setTitle("Title Test"+i);
+			boardVO.setContents("Contents Test"+i);
+			boardVO.setWriter("iu"+i);
+			
+			int result = noticeDAO.setInsert(boardVO);
+			
+			if(i%10==0) {
+				//10번마다 0.5초 쉬고 재작업
+				Thread.sleep(500);
+			}
+		}
+		//assertEquals(1, result);
+	}
+	
+	
+	//@Test
+	void setUpdateTest() throws Exception{
 		BoardVO boardVO = new NoticeVO();
 		
-		boardVO.setTitle("Insert Test");
-		boardVO.setContents("Insert Test");
+		boardVO.setNum(2L);
+		boardVO.setTitle("Update Test");
+		boardVO.setContents("Update Test");
 		boardVO.setWriter("winter");
 		
-		int result = noticeDAO.setInsert(boardVO);
+		int result = noticeDAO.setUpdate(boardVO);
+		assertEquals(1, result);
+	}
+	
+	
+	//@Test
+	void setDeleteTest() throws Exception{
+		BoardVO boardVO = new BoardVO();
+		
+		boardVO.setNum(5L);
+		
+		int result = noticeDAO.setDelete(boardVO);
 		assertEquals(1, result);
 	}
 
