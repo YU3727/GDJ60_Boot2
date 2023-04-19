@@ -23,7 +23,7 @@ public class Pager {
 	private Long startNum;
 	private Long lastNum;
 	//시작과 끝 블럭에서 블럭 사용을 disabled 시키기 위한 스위치
-	//아무값도 안넣으면 primitie type boolean은 false가 초기값임. ref타입(Boolean)은 null
+	//아무값도 안넣으면 primitive type boolean은 false가 초기값임. ref타입(Boolean)은 null
 	private boolean pre;
 	private boolean next;
 	

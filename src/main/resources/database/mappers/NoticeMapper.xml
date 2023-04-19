@@ -35,10 +35,52 @@
 	</select>
 
 	<!-- insert -->
-	<insert id="setInsert" parameterType="BoardVO">
-		INSERT INTO NOTICE(TITLE, CONTENTS, WRITER, REGDATE,  HIT)
-		VALUES(#{title}, #{contents}, #{writer}, now(), 0)
+	<!-- oracle때는 selectKey로 미리 시퀀스를 받아왔지만, MariaDB에는 auto_increment를 사용하기 때문에 다른걸 써야한다. -->
+	<!-- 'auto-increment로 발생한 수를 num에 넣어주세요' 라는 의미 -->
+	<insert id="setInsert" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="num">
+		<!-- INSERT INTO NOTICE(TITLE, CONTENTS, WRITER, REGDATE,  HIT)
+		VALUES(#{title}, #{contents}, #{writer}, now(), 0) -->
+		<!-- useGenerateKeys를 사용하고, 해당 옵션으로 생성된 값을 넣을 변수명을 keyProperty에 입력해준다. 값이 생성되었으므로 아래의 쿼리문을 사용한다. -->
+		INSERT INTO NOTICE(NUM, TITLE, CONTENTS, WRITER, REGDATE,  HIT)
+		VALUES(#{num}, #{title}, #{contents}, #{writer}, now(), 0)
 	</insert>
+	
+	<!-- insertFiles -->
+	<insert id="setFileInsert" parameterType="BoardFileVO">
+		INSERT INTO NOTICEFILES(FILENUM, NUM, FILENAME, ORINAME)
+		VALUES(#{fileNum}, #{num}, #{fileName}, #{oriName})
+	</insert>
+	
+	<!-- Detail -->
+	<!-- JOIN은 모든 db에 공통적으로 사용되는 문법이다. -->
+	<select id="getDetail" parameterType="BoardVO" resultMap="getBoardDetailResult">
+		SELECT * FROM NOTICE N
+			LEFT OUTER JOIN
+			NOTICEFILES NF
+			ON(N.NUM=NF.NUM)
+		WHERE N.NUM=#{num}
+	</select>
+	<resultMap type="NoticeVO" id="getBoardDetailResult">
+		<id property="num" column="NUM"/>
+		<result property="title" column="TITLE"/>
+		<result property="contents" column="CONTENTS"/>
+		<result property="writer" column="WRITER"/>
+		<result property="regDate" column="REGDATE"/>
+		<result property="hit" column="HIT"/>
+		<collection property="boardFileVOs" javaType="List" ofType="BoardFileVO">
+			<id property="fileNum" column="FILENUM"/>
+			<result property="num" column="NUM"/>
+			<result property="fileName" column="FILENAME"/>
+			<result property="oriName" column="ORINAME"/>
+		</collection>
+	</resultMap>
+	
+	
+	<!-- fileDetail -->
+	<select id="getFileDetail" parameterType="BoardFileVO" resultType="BoardFileVO">
+		SELECT * FROM NOTICEFILES WHERE FILENUM=#{fileNum}
+	</select>	
+	
 	
 	<!-- update -->
 	<update id="setUpdate" parameterType="BoardVO">

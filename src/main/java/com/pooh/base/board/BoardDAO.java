@@ -25,4 +25,9 @@ public interface BoardDAO {
 	//글삭제
 	public int setDelete(BoardVO boardVO) throws Exception;
 	
+	//파일 추가
+	public int setFileInsert(BoardFileVO boardFileVO) throws Exception;
+	
+	//파일 하나 조회
+	public BoardFileVO getFileDetail(BoardFileVO boardFileVO) throws Exception;
 }

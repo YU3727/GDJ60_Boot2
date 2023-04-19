@@ -38,7 +38,7 @@
                                 <!-- To make this form functional, sign up at-->
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
-                                <form id="contactForm" action="./add" method="post">
+                                <form id="contactForm" action="./add" method="post" enctype="multipart/form-data">
                                     <!-- title input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="title" type="text" placeholder="Enter Title..." data-sb-validations="required" name="title"/>
@@ -57,6 +57,11 @@
                                         <textarea class="form-control" id="contents" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required" name="contents"></textarea>
                                         <label for="contents">Contents</label>
                                         <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                                    </div>
+
+                                    <!-- 첨부파일 -->
+                                    <div class="form-floating mb-3">
+                                        <input type="file" name="boardFiles">
                                     </div>
 
                                     <!-- Submit Button-->

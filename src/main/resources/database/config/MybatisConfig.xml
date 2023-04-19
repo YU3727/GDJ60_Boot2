@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.pooh.base.board.BoardVO" alias="BoardVO"/>
+		<typeAlias type="com.pooh.base.board.BoardFileVO" alias="BoardFileVO"/>
 		<typeAlias type="com.pooh.base.board.notice.NoticeVO" alias="NoticeVO"/>
 		<typeAlias type="com.pooh.base.util.Pager" alias="Pager"/>
 	</typeAliases>
