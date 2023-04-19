@@ -52,11 +52,33 @@
                 	</table>
                 </div>
                 
+                <!-- 원시 pager, search -->
+                <c:if test="${pager.pre}">
+                	<a href="./list?page=${pager.startNum-1}">이전</a>
+                </c:if>
                 
-                <!-- 원시 pager -->
                 <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
-                	<a>${i}</a>
+                	<a href="./list?page=${i}">${i}</a>
                 </c:forEach>
+                
+                <c:if test="${pager.next}">
+                	<a href="./list?page=${pager.lastNum+1}">다음</a>
+                </c:if>
+                
+                <form action="./list" method="get">
+                	<select name="kind">
+                		<option value="title">title</option>
+                		<option value="contents">contents</option>
+                		<option value="writer">writer</option>
+                	</select>
+                	
+                	<input type="text" name="search">
+                	<button type="submit">search</button>
+                </form>
+                
+                <a href="./add">글쓰기</a>
+                
+                
                 
                 <!-- pager -->
                 <div class="d-flex justify-content-center">
@@ -69,7 +91,7 @@
 					      </a>
 					    </li>
 					  
-					    <li class="page-item ${pager.before ? 'disabled' :''}" data-board-page="${pager.startNum-1}">
+					    <li class="page-item ${pager.pre ? 'disabled' :''}" data-board-page="${pager.startNum-1}">
 					      <a class="page-link" href="./list?page=${pager.startNum-1}&kind=${pager.kind}&search=${pager.search}" aria-label="Previous">
 					        <span aria-hidden="true">&lsaquo;</span>
 					      </a>
@@ -80,7 +102,7 @@
 					    </c:forEach>
 				
 						<!-- 검색을 해서 나온 결과가 더 없으면 못누르게 해야함 -->
-					    <li class="page-item ${pager.after ? 'disabled' :''}">
+					    <li class="page-item ${pager.next ? 'disabled' :''}">
 					      <a class="page-link" href="./list?page=${pager.lastNum+1}&kind=${pager.kind}&search=${pager.search}" aria-label="Next" data-board-page="${pager.lastNum+1}">
 					        <span aria-hidden="true">&rsaquo;</span>
 					      </a>
@@ -128,3 +150,4 @@
   	<!-- Footer 끝 -->
 </body>
 </html>
+                

@@ -23,8 +23,9 @@ public class Pager {
 	private Long startNum;
 	private Long lastNum;
 	//시작과 끝 블럭에서 블럭 사용을 disabled 시키기 위한 스위치
-	private boolean before;
-	private boolean after;
+	//아무값도 안넣으면 primitie type boolean은 false가 초기값임. ref타입(Boolean)은 null
+	private boolean pre;
+	private boolean next;
 	
 	//검색기능
 	private String kind;
@@ -88,13 +89,14 @@ public class Pager {
 		}
 		
 		//7. 이전 블럭과 다음 블럭의 유무 확인
-		this.before = false;
-		this.after = false;
-		if(currentBlock==1) {
-			this.before=true;
+		if(currentBlock!=1) {
+			this.pre=true;
 		}
-		if(currentBlock==totalBlock) {
-			this.after=true;
+		
+		if(currentBlock!=totalBlock) {
+			this.next=true;
+		}else if(currentBlock==totalBlock) {
+			this.next=false;
 		}
 		
 	}
