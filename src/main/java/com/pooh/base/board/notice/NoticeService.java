@@ -64,11 +64,12 @@ public class NoticeService implements BoardService{
 		//auto-increment로 생성된 num이 잘 들어가있는지 확인.(oracle에서 selectKey와 유사함)
 		log.error("Num: {}", boardVO.getNum());
 		
-		Random random = new Random();
-		int num = random.nextInt(1);	
-		if(num==0) {
-			throw new Exception();
-		}
+		//exception 발생시키기
+//		Random random = new Random();
+//		int num = random.nextInt(1);	
+//		if(num==0) {
+//			throw new Exception();
+//		}
 		
 		//파일저장 - 파일이 있는경우에만 시행
 		if(multipartFiles!=null) {

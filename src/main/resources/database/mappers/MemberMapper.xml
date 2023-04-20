@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.pooh.base.member.MemberDAO">
+
+	<!-- getLogin -->
+	<select id="getLogin" parameterType="MemberVO" resultMap="getLoginResult">
+		SELECT M.USERNAME, M.EMAIL, R.NUM, R.ROLENAME
+		FROM MEMBER M
+			INNER JOIN
+			MEMBER_ROLE MR
+			ON(M.USERNAME=MR.USERNAME)
+			INNER JOIN
+			ROLE R
+			ON(MR.NUM=R.NUM)
+		WHERE M.USERNAME=#{userName} AND M.PASSWORD=#{passWord}
+	</select>
+	<!-- resultMap의 type은 최종 리턴타입이라고 생각 -->
+	<resultMap type="MemberVO" id="getLoginResult">
+		<id property="userName" column="USERNAME"/>
+		<result property="passWord" column="PASSWORD"/>
+		<result property="name" column="NAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="birth" column="BIRTH"/>
+		<result property="enabled" column="ENABLED"/>
+		
+		<collection property="roleVOs" javaType="List" ofType="RoleVO">
+			<id property="num" column="NUM"/>
+			<result property="roleName" column="ROLENAME"/>
+		</collection>
+	</resultMap>
+	
+	<!-- setJoin -->
+	<insert id="setJoin" parameterType="MemberVO">
+		INSERT INTO MEMBER(USERNAME, PASSWORD, NAME, EMAIL, BIRTH, ENABLED)
+		VALUES(#{userName}, #{passWord}, #{name}, #{email}, #{birth}, #{enabled})
+	</insert>
+	
+	<!-- setBasicRole -->
+	<!-- 기본 member 등급이 3번 -->
+	<insert id="setBasicRole" parameterType="MemberVO">
+		INSERT INTO MEMBER_ROLE(USERNAME, NUM)
+		VALUES(#{userName}, 3)
+	</insert>
+	
+
+
+
+</mapper>
