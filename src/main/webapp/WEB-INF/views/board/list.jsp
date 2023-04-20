@@ -59,14 +59,14 @@
                 <!-- 원시 pager, search -->
                 <div class="d-flex justify-content-center my-3">
 	                <c:if test="${pager.pre}">
-	                	<a href="./list?page=${pager.startNum-1}">이전</a>
+	                	<a href="./list?page=${pager.startNum-1}&kind=${pager.kind}&search=${pager.search}">이전</a>
 	                </c:if>
 	                
 	                <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
 	                	<a href="./list?page=${i}">${i}</a>
 	                </c:forEach>
 	                
-	                <c:if test="${pager.next}">
+	                <c:if test="${pagexr.next}">
 	                	<a href="./list?page=${pager.lastNum+1}">다음</a>
 	                </c:if>
                 </div>
