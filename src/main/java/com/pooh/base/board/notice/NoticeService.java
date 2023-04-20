@@ -1,10 +1,12 @@
 package com.pooh.base.board.notice;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pooh.base.board.BoardFileVO;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j //log 확인을 위함
+@Transactional(rollbackFor=Exception.class)
 public class NoticeService implements BoardService{
 	//source - Override/implement Method 눌러서 작성
 	
@@ -60,6 +63,12 @@ public class NoticeService implements BoardService{
 		int result = noticeDAO.setInsert(boardVO);
 		//auto-increment로 생성된 num이 잘 들어가있는지 확인.(oracle에서 selectKey와 유사함)
 		log.error("Num: {}", boardVO.getNum());
+		
+		Random random = new Random();
+		int num = random.nextInt(1);	
+		if(num==0) {
+			throw new Exception();
+		}
 		
 		//파일저장 - 파일이 있는경우에만 시행
 		if(multipartFiles!=null) {
