@@ -28,7 +28,7 @@ public class AdminCheckInterceptor implements HandlerInterceptor{
 		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 				throws Exception {
 		//권한 여부 확인용 변수
-		boolean checkAdmin = false;
+		//boolean checkAdmin = false;
 		
 		log.info("========== admin check Interceptor proceeding... ==========");
 		
@@ -36,42 +36,45 @@ public class AdminCheckInterceptor implements HandlerInterceptor{
 		MemberVO memberVO = (MemberVO)session.getAttribute("member");
 		
 		//로그인 했으면 interceptor, 안했으면 로그인하게 어케하지?
-		if(memberVO != null) {
+//		if(memberVO != null) {
 			//사용자 1명당 권한이 2개 이상일수도 있으므로, 반복문으로 확인
 			for(RoleVO roleVO : memberVO.getRoleVOs()) {
 				if(roleVO.getRoleName().equals("ADMIN")) {
 					//admin이 맞다
-					checkAdmin = true;
-					break;
-				}else {
-					//admin이 아니다
-					//결과 보여주기 - 옛날 방식의 fowarding
-					//model에 담을 내용
-					request.setAttribute("message", "권한이 없습니다");
-					request.setAttribute("url", "/");
-					
-					//view 경로 설정
-					RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/result.jsp");
-					view.forward(request, response);
-					
-					checkAdmin = false;
+					return true;
+					//checkAdmin = true;
+					//break;
 				}
+//				else {
+				//admin이 아니다
+				//결과 보여주기 - 옛날 방식의 fowarding
+				//model에 담을 내용
+//				checkAdmin = false;
+//				}
 			}
-			
-		}else {
-			//로그인 안했으면
-			//model에 담을 내용 설정(메시지, url)
-			request.setAttribute("message", "로그인이 필요합니다.");
-			request.setAttribute("url", "/member/login");		
+			request.setAttribute("message", "권한이 없습니다");
+			request.setAttribute("url", "/");
 			
 			//view 경로 설정
-			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/result.jsp"); //jsp 경로 쓰기. prefix, suffinx가 자동으로 붙지 않기 때문에 경로를 다 써줘야함.
+			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/result.jsp");
 			view.forward(request, response);
 			
-			checkAdmin = false;
-		}
+			return false;
+			
+//		}else {
+//			//로그인 안했으면
+//			//model에 담을 내용 설정(메시지, url)
+//			request.setAttribute("message", "로그인이 필요합니다.");
+//			request.setAttribute("url", "/member/login");		
+//			
+//			//view 경로 설정
+//			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/result.jsp"); //jsp 경로 쓰기. prefix, suffinx가 자동으로 붙지 않기 때문에 경로를 다 써줘야함.
+//			view.forward(request, response);
+//			
+//			checkAdmin = false;
+//		}
 		
-		return checkAdmin;
+//		return checkAdmin;
 		
 		
 		}

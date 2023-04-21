@@ -28,14 +28,25 @@ public class InterceptorConfig implements WebMvcConfigurer{
 		//memberCheckInterceptor 실행
 		registry.addInterceptor(memberCheckInterceptor) //해당 인터셉터를
 					.addPathPatterns("/member/mypage") //언제(어떤 url이 왔을 때) 실행할거냐
-					.addPathPatterns("/qna/add")
-					
+					.addPathPatterns("/qna/*")
+					.excludePathPatterns("/qna/list")
+					.addPathPatterns("/member/admin") //admin 체크할 때 로그인 했는지 안했는지 체크
+					.addPathPatterns("/notice/*")
+					.excludePathPatterns("/notice/list")
+					.excludePathPatterns("/notice/detail")
 					
 					;
 //					.excludePathPatterns("/member/login") //제외할 경로 설정
 		
 		//adminCheckInterceptor 실행
 		registry.addInterceptor(adminCheckInterceptor)
-					.addPathPatterns("/member/admin");
+					.addPathPatterns("/member/admin")
+					.addPathPatterns("/notice/*")
+					.excludePathPatterns("/notice/list")
+					.excludePathPatterns("/notice/detail")
+					
+					
+					;
+		
 	}
 }
