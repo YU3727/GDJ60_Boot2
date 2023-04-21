@@ -10,8 +10,9 @@
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/notice/list">Notice</a></li>
                 <li class="nav-item"><a class="nav-link" href="/qna/list">Q&A</a></li>
+                <li class="nav-item"><a class="nav-link" href="/member/admin">Admin</a></li>
 
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                         <li><a class="dropdown-item" href="blog-home.html">Blog Home</a></li>
@@ -24,11 +25,11 @@
                         <li><a class="dropdown-item" href="portfolio-overview.html">Portfolio Overview</a></li>
                         <li><a class="dropdown-item" href="portfolio-item.html">Portfolio Item</a></li>
                     </ul>
-                </li>
+                </li> -->
                 <c:choose>
                 	<c:when test="${not empty member}">
 		                <li class="nav-item"><a class="nav-link" href="/member/logout">Logout</a></li>
-                		<li class="nav-item"><a class="nav-link" href="/member/myPage">My Page</a></li>
+                		<li class="nav-item"><a class="nav-link" href="/member/mypage">My Page</a></li>
                 	</c:when>
                 	<c:otherwise>
 		                <li class="nav-item"><a class="nav-link" href="/member/login">Login</a></li>

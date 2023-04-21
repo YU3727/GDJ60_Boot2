@@ -1,5 +1,7 @@
 package com.pooh.base.member;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -13,6 +15,10 @@ public interface MemberDAO {
 	public int setJoin(MemberVO memberVO) throws Exception;
 	
 	//basicRole
-	public int setBasicRole(MemberVO memberVO) throws Exception;
+	//public int setBasicRole(MemberVO memberVO) throws Exception;
+	public int setBasicRole(Map<String, Object> map) throws Exception;
+	
+	//idDuplicateCheck
+	public MemberVO idDuplicateCheck(MemberVO memberVO) throws Exception;
 	
 }

@@ -39,22 +39,28 @@
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
                                 <form action="./join" id="joinForm" method="post" data-sb-form-api-token="API_TOKEN">
-                                	<input type="hidden" name="enabled" value="true">
+                                	<!-- required는 html5에서만 동작하므로, 사용자의 환경이 html5가 아닌 경우 검증할 수 없다. 그래서 JavaScript로 다시 체크를 한다. -->
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">
-                                        <input name="userName" class="form-control" id="userName" type="text" data-sb-validations="required" />
+                                        <input name="userName" class="form-control" id="userName" type="text" required="required" data-sb-validations="required" />
                                         <label for="userName">USERNAME</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">username is required.</div>
                                     </div>
                                     <!-- passWord input-->
                                     <div class="form-floating mb-3">
-                                        <input name="passWord" class="form-control" id="passWord" type="password" data-sb-validations="required" />
+                                        <input name="passWord" class="form-control" id="passWord" type="password" required="required" data-sb-validations="required" />
                                         <label for="passWord">PASSWORD</label>
                                         <div class="invalid-feedback" data-sb-feedback="phone:required">password is required.</div>
                                     </div>
+                                    <!-- chkPassWord input-->
+                                    <div class="form-floating mb-3">
+                                        <input name="passWordCheck" class="form-control" id="passWordCheck" type="password" data-sb-validations="required" />
+                                        <label for="passWordCheck">PASSWORD CHECK</label>
+                                        <div class="invalid-feedback" data-sb-feedback="phone:required">passwordCheck is required.</div>
+                                    </div>
                                     <!-- name input-->
                                     <div class="form-floating mb-3">
-                                        <input name="name" class="form-control" id="name" type="text" data-sb-validations="required" />
+                                        <input name="name" class="form-control" id="name" type="text" required="required" data-sb-validations="required" />
                                         <label for="name">NAME</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">name is required.</div>
                                     </div>
@@ -86,6 +92,6 @@
     <!-- Footer 적용 -->
      	<c:import url="../temp/footer.jsp"></c:import>
   	<!-- Footer 끝 -->
-  	<script type="text/javascript" src="../js/member.js"></script>
+  	<script type="text/javascript" src="../js/joinFormCheck.js"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WebConfig implements WebMvcConfigurer{
 
 	//legacy에서 servlet-context.xml에 작성되어있는 내용 작성
-	//자원들의 경로를 여기에 표시 해준다.
+	//파일 다운로드를 위한 자원들의 경로를 여기에 표시 해준다.
 	
 	@Value("${app.upload.base}")
 	private String basePath;

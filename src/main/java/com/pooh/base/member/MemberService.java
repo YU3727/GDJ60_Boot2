@@ -1,5 +1,8 @@
 package com.pooh.base.member;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,14 +40,33 @@ public class MemberService {
 	
 	//join
 	public int setJoin(MemberVO memberVO) throws Exception{
-		//순서 : 1.입력된 정보 db에 insert, 2.입력된 정보에 기본 회원등급 member 추가해주기
+		//순서 : 1.입력된 정보 db에 insert, 2.입력된 정보에 기본 회원등급 member 추가해주기, 3.enabled 기본값 입력(true)
 		
 		//1.
 		int result = memberDAO.setJoin(memberVO);
 		
-		//2.
-		result = memberDAO.setBasicRole(memberVO);
+		//2. memberVO 대신 Map을 사용해보기. map은 interface라 구현클래스인 hashMap을 사용
+		//result = memberDAO.setBasicRole(memberVO);
+		Map<String, Object> map = new HashMap<>();
+		map.put("userName", memberVO.getUserName());
+		map.put("num", 3);
+		result = memberDAO.setBasicRole(map);
+		
+		//3.
+		memberVO.setEnabled(true);
 		
 		return result;
+	}
+	
+	//idDuplicateCheck
+	public boolean idDuplicateCheck(MemberVO memberVO) throws Exception{
+		memberVO = memberDAO.idDuplicateCheck(memberVO);
+		
+		boolean idCheck = true; //중복 아니면 true, 중복이면 false
+		if(memberVO != null) {
+			idCheck = false;
+		}
+		
+		return idCheck;
 	}
 }

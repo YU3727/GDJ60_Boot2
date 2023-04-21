@@ -39,11 +39,16 @@
 	</insert>
 	
 	<!-- setBasicRole -->
-	<!-- 기본 member 등급이 3번 -->
-	<insert id="setBasicRole" parameterType="MemberVO">
+	<!-- 기본 member 등급이 3번 / Map을 사용하려면 key를 알아야한다. MemberVO를 사용해도 되긴함. -->
+	<insert id="setBasicRole" parameterType="Map">
 		INSERT INTO MEMBER_ROLE(USERNAME, NUM)
-		VALUES(#{userName}, 3)
+		VALUES(#{userName}, #{num})
 	</insert>
+	
+	<!-- idDuplicateCheck -->
+	<select id="idDuplicateCheck" parameterType="MemberVO" resultType="MemberVO">
+		SELECT * FROM MEMBER WHERE USERNAME=#{userName}
+	</select>
 	
 
 
