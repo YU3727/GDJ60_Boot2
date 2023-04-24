@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +42,7 @@ public class MemberController {
 		//로그인 성공하면 담을 세션도 준비.
 		ModelAndView mv = new ModelAndView();
 		
-		memberVO = memberService.getrLogin(memberVO);
+		memberVO = memberService.getLogin(memberVO);
 		
 		mv.setViewName("redirect:./login");
 		
@@ -68,10 +69,12 @@ public class MemberController {
 	
 	//join - get
 	@GetMapping("join")
-	public ModelAndView setJoin(MemberVO memberVO) throws Exception{
+	public ModelAndView setJoin(@ModelAttribute MemberVO memberVO) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		
 		mv.setViewName("member/join");
+		//이것도 가능
+		//mv.addObject(new MemberVO());
 		return mv;
 	}
 	
@@ -80,8 +83,12 @@ public class MemberController {
 	public ModelAndView setJoin(@Valid MemberVO memberVO, BindingResult bindingResult) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		
+		boolean check = memberService.memberCheck(memberVO, bindingResult);
+		
+		
 		//검증
-		if(bindingResult.hasErrors()) {
+		//if(bindingResult.hasErrors()) {
+		if(check) {
 			//에러가 있다면
 			log.warn("=============== 검증에 실패함 ==================");
 			mv.setViewName("member/join");
@@ -91,14 +98,6 @@ public class MemberController {
 		//insert
 		int result = memberService.setJoin(memberVO);
 		
-		//ajax로 보낸게 아니기 때문에 result로 바로 보낼 수 없음.
-//		String message = "회원가입에 실패했습니다.";
-//		if(result>0) {
-//			message="축하드립니다\n회원가입에 성공했습니다.";
-//		}
-//		mv.addObject("result", message);
-//		mv.addObject("url", "./login");
-//		mv.setViewName("common/result");
 		mv.setViewName("redirect:../");
 		return mv;
 	}

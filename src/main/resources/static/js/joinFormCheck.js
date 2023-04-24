@@ -7,7 +7,7 @@
 
 
  //id 중복 체크
- $('#userName').blur(idDuplicateCheck);
+ //$('#userName').blur(idDuplicateCheck);
 
  function idDuplicateCheck() {
     //ajax

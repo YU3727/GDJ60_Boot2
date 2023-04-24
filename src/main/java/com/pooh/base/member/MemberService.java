@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,8 +18,37 @@ public class MemberService {
 	@Autowired
 	private MemberDAO memberDAO;
 	
+	//패스워드가 일치하는지, id중복은 없는지 검증하는 메서드 작성
+	public boolean memberCheck(MemberVO memberVO, BindingResult bindingResult) throws Exception{
+		//error 유무를 저장하는 클래스 BindingResult도 사용한다.
+		boolean result = false;
+		//false : 에러없음(검증성공)
+		//true  : 에러있음(검증실패)
+		
+		//1.Annotation의 검증 결과
+		//result 자체가 controller에서 한번 검증을 받은 결과를 가져옴.
+		result = bindingResult.hasErrors();
+		
+		//2. password 일치 검증
+		if(!memberVO.getPassword().equals(memberVO.getPasswordCheck())) {
+			result = true;
+			//어느 부분을 비교하고, 어느 설정에 등록된 내용을 쓸것인지 key값 입력
+			//bindingResult.rejectValue("멤버변수명(path)", "properties의key(코드)");
+			bindingResult.rejectValue("passwordCheck", "member.password.notEqual");
+		}
+		
+		//3. ID중복 검사
+		log.info("있을까? : {}", memberDAO.idDuplicateCheck(memberVO));
+		if(memberDAO.idDuplicateCheck(memberVO)!=null) {
+			result = true;
+			bindingResult.rejectValue("userName", "member.userName.duplicate");
+		}
+		
+		return result;
+	}
+	
 	//login
-	public MemberVO getrLogin(MemberVO memberVO) throws Exception{
+	public MemberVO getLogin(MemberVO memberVO) throws Exception{
 		//입력받는 memberVO에는 username, password만 있음
 		MemberVO result = memberDAO.getLogin(memberVO);
 		

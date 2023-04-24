@@ -15,12 +15,12 @@
 			INNER JOIN
 			ROLE R
 			ON(MR.NUM=R.NUM)
-		WHERE M.USERNAME=#{userName} AND M.PASSWORD=#{passWord}
+		WHERE M.USERNAME=#{userName} AND M.PASSWORD=#{password}
 	</select>
 	<!-- resultMap의 type은 최종 리턴타입이라고 생각 -->
 	<resultMap type="MemberVO" id="getLoginResult">
 		<id property="userName" column="USERNAME"/>
-		<result property="passWord" column="PASSWORD"/>
+		<result property="password" column="PASSWORD"/>
 		<result property="name" column="NAME"/>
 		<result property="email" column="EMAIL"/>
 		<result property="birth" column="BIRTH"/>
@@ -35,7 +35,7 @@
 	<!-- setJoin -->
 	<insert id="setJoin" parameterType="MemberVO">
 		INSERT INTO MEMBER(USERNAME, PASSWORD, NAME, EMAIL, BIRTH, ENABLED)
-		VALUES(#{userName}, #{passWord}, #{name}, #{email}, #{birth}, #{enabled})
+		VALUES(#{userName}, #{password}, #{name}, #{email}, #{birth}, #{enabled})
 	</insert>
 	
 	<!-- setBasicRole -->

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>\
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
@@ -45,38 +45,40 @@
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">
                                     	<form:input path="userName" id="userName" cssClass="form-control"/>
-                                        <label for="userName">USERNAME</label>
+                                        <form:label path="userName">USERNAME</form:label>
                                         <form:errors path="userName"></form:errors>
                                     </div>
-                                    <!-- passWord input-->
+                                    <!-- password input-->
                                     <div class="form-floating mb-3">
-                                    	<form:input path="passWord" id="passWord" cssClass="form-control"/>
-                                        <label for="passWord">PASSWORD</label>
-                                        <form:errors path="passWord"></form:errors>
+                                    	<form:password path="password" id="password" cssClass="form-control"/>
+                                        <form:label path="password">PASSWORD</form:label>
+                                        <form:errors path="password"></form:errors>
                                     </div>
-                                    <!-- chkPassWord input-->
+                                    <!-- passwordCheck input-->
                                     <div class="form-floating mb-3">
-                                    	<%-- <form:input path="passWordCheck" id="passWordCheck" cssClass="form-control"/> --%>
-                                        <input name="passWordCheck" class="form-control" id="passWordCheck" type="password" data-sb-validations="required" />
-                                        <label for="passWordCheck">PASSWORD CHECK</label>
+                                    	<form:password path="passwordCheck" id="passwordCheck" cssClass="form-control"/>
+                                        <form:label path="passwordCheck">PASSWORD CHECK</form:label>
+                                        <form:errors path="passwordCheck"></form:errors>
+                                        
                                     </div>
                                     <!-- name input-->
                                     <div class="form-floating mb-3">
                                     	<form:input path="name" id="name" cssClass="form-control"/>
-                                        <label for="name">NAME</label>
+                                        <form:label path="name">NAME</form:label>
                                         <form:errors path="name"></form:errors>
                                     </div>
                                     <!-- email input-->
                                     <div class="form-floating mb-3">
                                     	<form:input path="email" id="email" cssClass="form-control"/>
-                                        <label for="email">EMAIL</label>
+                                        <form:label path="email">EMAIL</form:label>
                                         <form:errors path="email"></form:errors>
                                     </div>
                                     <!-- birth input-->
                                     <div class="form-floating mb-3">
                                     	<!-- form:date는 없으므로 그냥 input tag를 사용한다. -->
                                     	<input type="date" name="birth" class="form-control" id="birth"/>
-                                        <label for="birth">BIRTH</label>
+                                        <form:label path="birth">BIRTH</form:label>
+                                        <form:errors path="birth"></form:errors>
                                     </div>
                                     <!-- join btn -->
                                     <div class="d-flex justify-content-between form-floating mb-3">
