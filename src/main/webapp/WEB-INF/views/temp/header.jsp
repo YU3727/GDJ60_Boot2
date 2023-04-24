@@ -36,6 +36,9 @@
 		                <li class="nav-item"><a class="nav-link" href="/member/join">Join</a></li>
                 	</c:otherwise>
                 </c:choose>
+                <!-- 이동위치가 루트(/)가 아니라 현재위치에서 바뀌게는 어떻게 할 까? -->
+                <li class="nav-item"><a class="nav-link" href="/?lang_opt=ko">KR</a></li>
+		        <li class="nav-item"><a class="nav-link" href="/?lang_opt=en">EN</a></li>
             </ul>
         </div>
     </div>

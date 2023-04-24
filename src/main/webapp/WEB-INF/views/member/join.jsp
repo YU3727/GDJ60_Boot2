@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>\
+    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,50 +39,51 @@
                                 <!-- To make this form functional, sign up at-->
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
-                                <form action="./join" id="joinForm" method="post" data-sb-form-api-token="API_TOKEN">
+                                <!-- form:form의 제일 중요한 속성 - ModelAttribute : 입력받을 VO를 적는다. // action을 생략하는경우 입력받은 url 그대로 감 -->
+                                <form:form action="./join" method="post" modelAttribute="memberVO" id="joinForm">
                                 	<!-- required는 html5에서만 동작하므로, 사용자의 환경이 html5가 아닌 경우 검증할 수 없다. 그래서 JavaScript로 다시 체크를 한다. -->
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">
-                                        <input name="userName" class="form-control" id="userName" type="text" required="required" data-sb-validations="required" />
+                                    	<form:input path="userName" id="userName" cssClass="form-control"/>
                                         <label for="userName">USERNAME</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">username is required.</div>
+                                        <form:errors path="userName"></form:errors>
                                     </div>
                                     <!-- passWord input-->
                                     <div class="form-floating mb-3">
-                                        <input name="passWord" class="form-control" id="passWord" type="password" required="required" data-sb-validations="required" />
+                                    	<form:input path="passWord" id="passWord" cssClass="form-control"/>
                                         <label for="passWord">PASSWORD</label>
-                                        <div class="invalid-feedback" data-sb-feedback="phone:required">password is required.</div>
+                                        <form:errors path="passWord"></form:errors>
                                     </div>
                                     <!-- chkPassWord input-->
                                     <div class="form-floating mb-3">
+                                    	<%-- <form:input path="passWordCheck" id="passWordCheck" cssClass="form-control"/> --%>
                                         <input name="passWordCheck" class="form-control" id="passWordCheck" type="password" data-sb-validations="required" />
                                         <label for="passWordCheck">PASSWORD CHECK</label>
-                                        <div class="invalid-feedback" data-sb-feedback="phone:required">passwordCheck is required.</div>
                                     </div>
                                     <!-- name input-->
                                     <div class="form-floating mb-3">
-                                        <input name="name" class="form-control" id="name" type="text" required="required" data-sb-validations="required" />
+                                    	<form:input path="name" id="name" cssClass="form-control"/>
                                         <label for="name">NAME</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">name is required.</div>
+                                        <form:errors path="name"></form:errors>
                                     </div>
                                     <!-- email input-->
                                     <div class="form-floating mb-3">
-                                        <input name="email" class="form-control" id="email" type="email" data-sb-validations="required" />
+                                    	<form:input path="email" id="email" cssClass="form-control"/>
                                         <label for="email">EMAIL</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">email is required.</div>
+                                        <form:errors path="email"></form:errors>
                                     </div>
                                     <!-- birth input-->
                                     <div class="form-floating mb-3">
-                                        <input name="birth" class="form-control" id="birth" type="date" data-sb-validations="required" />
+                                    	<!-- form:date는 없으므로 그냥 input tag를 사용한다. -->
+                                    	<input type="date" name="birth" class="form-control" id="birth"/>
                                         <label for="birth">BIRTH</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">birth is required.</div>
                                     </div>
                                     <!-- join btn -->
                                     <div class="d-flex justify-content-between form-floating mb-3">
                                         <button type="button" id="joinBackBtn" class="feature bg-danger bg-gradient text-white rounded-3">X</button>   
                                         <button type="button" id="joinBtn" class="feature bg-primary bg-gradient text-white rounded-3">O</button>
                                     </div>
-                                </form>
+                                </form:form>
                             </div>
                         </div>
                     </div>

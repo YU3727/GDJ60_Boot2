@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -40,7 +41,25 @@
             <section class="py-5" id="features">
                 <div class="container px-5 my-5">
                     <div class="row gx-5">
-                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to start building.</h2></div>
+                        <div class="col-lg-4 mb-5 mb-lg-0">
+                        	<!-- message -->
+                        	<h2>
+                        		<!-- hello 코드에 담긴 메시지를 변수(var) msg에 담겠다는 의미. -->
+                        		<!-- 단, 영역은 페이지(pageScope)다 -->
+                        		<spring:message code="hello" var="msg"></spring:message>
+                        		
+                        		<!-- 없는 key를 출력할 경우 에러 발생, text에는 key가 없을 떄 출력할 기본 메시지. -->
+                        		<!-- 에러를 방지하는 방법은 두가지가 있음 // 1.application.properties에 use-as~를 true로 / 2.text=""에 기본텍스트 설정 -->
+                        		<%-- <spring:message code="hi" text="없는 메시지입니다."></spring:message><br> --%>
+                        		
+                        		<!-- arguments는 매개변수이고, argumentSeparator는 매개변수의 구분자이다. -->
+                        		<spring:message code="loginSuccess" text="없는 메시지" arguments="${member.userName},${member.name}" argumentSeparator=","></spring:message>
+                        	</h2>
+                        	<h2 class="fw-bolder mb-0">A better way to start building.</h2>
+                        	<h2>
+                        		${msg}
+                        	</h2>
+                        </div>
                         <div class="col-lg-8">
                             <div class="row gx-5 row-cols-1 row-cols-md-2">
                                 <div class="col mb-5 h-100">

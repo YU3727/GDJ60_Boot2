@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,19 +39,28 @@
                                 <!-- To make this form functional, sign up at-->
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
-                                <form id="contactForm" action="./add" method="post" enctype="multipart/form-data">
-                                    <!-- title input-->
-                                    <div class="form-floating mb-3">
+                                <%-- <form id="contactForm" action="./add" method="post" enctype="multipart/form-data"> --%>
+                                <!-- 검증을 위한 Spring Form / 위 form은 일반 html form이다 -->
+                                <form:form id="contactForm" action="./add" method="post" modelAttribute="BoardVO" cssClass="" enctype="multipart/form-data">
+                                    <!-- title input(html)-->
+                                    <!-- <div class="form-floating mb-3">
                                         <input class="form-control" id="title" type="text" placeholder="Enter Title..." data-sb-validations="required" name="title"/>
                                         <label for="title">Title</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A title is required.</div>
+                                    </div> -->
+                                    <!-- title input(Spring Form)-->
+                                    <div class="form-floating mb-3">
+                                        <!-- html에서 type 속성이던게 태그명으로 바뀜, modelAttribute로 받는 VO의 setter 이름과 일치시켜야함(멤버변수명) = input tag의 name과 같은역할 -->
+                                        <!-- parameter를 noticeVO 자체에 담아서 보냄 -->
+                                        <form:input path="title" id="title" cssClass="form-control"/>
+                                        <label for="title">Title</label>
+                                        <form:errors path="title" cssStyle="color:red"></form:errors>
                                     </div>
                                     <!-- writer input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="writer" type="text" data-sb-validations="required,email" name="writer"/>
+                                        <form:input path="writer" id="writer" cssClass="form-control"/>
                                         <label for="writer">Writer</label>
-                                        <div class="invalid-feedback" data-sb-feedback="email:required">An writer is required.</div>
-                                        <div class="invalid-feedback" data-sb-feedback="email:email">Writer is not valid.</div>
+                                        <form:errors path="writer"></form:errors>
                                     </div>
                                     <!-- Contents input-->
                                     <div class="form-floating mb-3">
@@ -65,8 +75,9 @@
                                     </div>
 
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="button">Submit</button></div>
-                                </form>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button></div>
+                                </form:form>
+                                <%-- </form> --%>
                             </div>
                         </div>
                     </div>
@@ -101,6 +112,6 @@
      	<c:import url="../temp/footer.jsp"></c:import>
   	<!-- Footer 끝 -->
   	<!-- url이 /notice/add.jsp 이므로.. -->
-  	<script type="text/javascript" src="../js/boardValidation.js"></script>
+  	<!-- <script type="text/javascript" src="../js/boardValidation.js"></script> -->
 </body>
 </html>

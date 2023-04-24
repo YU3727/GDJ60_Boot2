@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +68,7 @@ public class MemberController {
 	
 	//join - get
 	@GetMapping("join")
-	public ModelAndView setJoin() throws Exception{
+	public ModelAndView setJoin(MemberVO memberVO) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		
 		mv.setViewName("member/join");
@@ -75,9 +77,18 @@ public class MemberController {
 	
 	//join - post
 	@PostMapping("join")
-	public ModelAndView setJoin(MemberVO memberVO) throws Exception{
+	public ModelAndView setJoin(@Valid MemberVO memberVO, BindingResult bindingResult) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		
+		//검증
+		if(bindingResult.hasErrors()) {
+			//에러가 있다면
+			log.warn("=============== 검증에 실패함 ==================");
+			mv.setViewName("member/join");
+			return mv;
+		}
+		
+		//insert
 		int result = memberService.setJoin(memberVO);
 		
 		//ajax로 보낸게 아니기 때문에 result로 바로 보낼 수 없음.
