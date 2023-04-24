@@ -18,6 +18,11 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!-- Spring Form 검증 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 		<!-- AOP Library -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
