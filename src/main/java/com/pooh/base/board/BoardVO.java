@@ -16,7 +16,6 @@ public class BoardVO {
 
 	private Long num;
 	@NotBlank
-	@Size(min=3, max=20)
 	private String title;
 	private String contents;
 	@NotBlank
