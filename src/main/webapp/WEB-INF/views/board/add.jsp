@@ -41,13 +41,7 @@
                                 <!-- to get an API token!-->
                                 <%-- <form id="contactForm" action="./add" method="post" enctype="multipart/form-data"> --%>
                                 <!-- 검증을 위한 Spring Form / 위 form은 일반 html form이다 -->
-                                <form:form id="contactForm" action="./add" method="post" modelAttribute="BoardVO" cssClass="" enctype="multipart/form-data">
-                                    <!-- title input(html)-->
-                                    <!-- <div class="form-floating mb-3">
-                                        <input class="form-control" id="title" type="text" placeholder="Enter Title..." data-sb-validations="required" name="title"/>
-                                        <label for="title">Title</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">A title is required.</div>
-                                    </div> -->
+                                <form:form id="contactForm" action="./add" method="post" modelAttribute="boardVO" enctype="multipart/form-data">
                                     <!-- title input(Spring Form)-->
                                     <div class="form-floating mb-3">
                                         <!-- html에서 type 속성이던게 태그명으로 바뀜, modelAttribute로 받는 VO의 setter 이름과 일치시켜야함(멤버변수명) = input tag의 name과 같은역할 -->

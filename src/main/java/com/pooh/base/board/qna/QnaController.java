@@ -72,7 +72,7 @@ public class QnaController {
 	
 	//add-get
 	@GetMapping("add")
-	public ModelAndView setInsert() throws Exception{
+	public ModelAndView setInsert(BoardVO boardVO) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		
 		mv.setViewName("board/add");
@@ -82,10 +82,10 @@ public class QnaController {
 	
 	//add-post
 	@PostMapping("add")
-	public ModelAndView setInsert(QnaVO qnaVO, MultipartFile[] boardFiles) throws Exception{
+	public ModelAndView setInsert(BoardVO boardVO, MultipartFile[] boardFiles) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		
-		int result = qnaService.setInsert(qnaVO, boardFiles);
+		int result = qnaService.setInsert(boardVO, boardFiles);
 		
 		mv.setViewName("redirect:./list");
 		return mv;

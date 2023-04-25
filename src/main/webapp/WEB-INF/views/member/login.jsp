@@ -45,10 +45,10 @@
                                         <label for="userName">USERNAME</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">username is required.</div>
                                     </div>
-                                    <!-- passWord input-->
+                                    <!-- password input-->
                                     <div class="form-floating mb-3">
-                                        <input name="passWord" class="form-control" id="passWord" type="password" data-sb-validations="required" />
-                                        <label for="passWord">PASSWORD</label>
+                                        <input name="password" class="form-control" id="password" type="password" data-sb-validations="required" />
+                                        <label for="password">PASSWORD</label>
                                         <div class="invalid-feedback" data-sb-feedback="phone:required">password is required.</div>
                                     </div>
                                     <!-- Login btn -->
