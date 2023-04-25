@@ -117,18 +117,18 @@ public class NoticeController {
 		
 		//이게 될까? 시리즈
 		//BoardVO 안의 SubVO 안에 있는 subName에 바로 입력이 가능할까? -> OK
-		log.error("============= {} ============", boardVO.getSubVO().getSubName());
-		
-		//BoardVO 안의 String[] names에 배열로 값을 받아올 수 있을까? -> OK
-		//BoardVO 안의 List<String> 리스트로 값을 받아올 수 있을까? -> OK
-		for(String n : boardVO.getNames()) {
-			log.error("============= {} ============", n);
-		}
-		
-		//파일도 될까?
-		for(BoardFileVO boardFileVO : boardVO.getBoardFileVOs()) {
-			log.error("============= {} ============", boardFileVO.getFileName());
-		}
+//		log.error("============= {} ============", boardVO.getSubVO().getSubName());
+//		
+//		//BoardVO 안의 String[] names에 배열로 값을 받아올 수 있을까? -> OK
+//		//BoardVO 안의 List<String> 리스트로 값을 받아올 수 있을까? -> OK
+//		for(String n : boardVO.getNames()) {
+//			log.error("============= {} ============", n);
+//		}
+//		
+//		//파일도 될까?
+//		for(BoardFileVO boardFileVO : boardVO.getBoardFileVOs()) {
+//			log.error("============= {} ============", boardFileVO.getFileName());
+//		}
 		
 		//선 - 검증
 		if(bindingResult.hasErrors()) {
