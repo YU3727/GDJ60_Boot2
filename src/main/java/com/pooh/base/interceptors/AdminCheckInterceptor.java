@@ -39,7 +39,7 @@ public class AdminCheckInterceptor implements HandlerInterceptor{
 //		if(memberVO != null) {
 			//사용자 1명당 권한이 2개 이상일수도 있으므로, 반복문으로 확인
 			for(RoleVO roleVO : memberVO.getRoleVOs()) {
-				if(roleVO.getRoleName().equals("ADMIN")) {
+				if(roleVO.getRoleName().equals("ROLE_ADMIN")) {
 					//admin이 맞다
 					return true;
 					//checkAdmin = true;
