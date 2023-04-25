@@ -56,6 +56,48 @@
                                         <label for="writer">Writer</label>
                                         <form:errors path="writer"></form:errors>
                                     </div>
+                                    
+                                    <!-- 이게 될까? 시리즈 -->
+                                    <!-- subName input, 이게 될까?-> Spring Form을 사용하면 된다... -->
+                                    <div class="form-floating mb-3">
+                                        <form:input path="subVO.subName" id="subVO.subName" cssClass="form-control"/>
+                                        <label for="subVO.subName">Sub Name</label>
+                                    </div>
+                                    
+                                    <!-- checkbox 등의 옵션을 받는 경우(동일한 이름으로 여러 파라미터 받기) -->
+                                    <div class="form-floating mb-3">
+                                        <form:input path="names" id="names" cssClass="form-control"/>
+                                        <label for="names">names</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <form:input path="names" id="names" cssClass="form-control"/>
+                                        <label for="names">names</label>
+                                    </div>
+                                    
+                                    <!-- 파일 여러개 중 파일 하나의 이름 출력. List에는 boardFileVO의 getter가 없어서 안됨 -->
+                                    <%-- <div class="form-floating mb-3">
+                                        <form:input path="boardFileVOs.boardFileVO.fileName" id="names" cssClass="form-control"/>
+                                        <label for="names">BoardFileName</label>
+                                    </div> --%>
+                                    
+                                    <!-- 여려개 파일 중 index로 하나를 꺼내는건 될까? -> 안됨 -->
+                                    <%-- <div class="form-floating mb-3">
+                                        <form:input path="boardFileVOs.get(0).fileName" id="names" cssClass="form-control"/>
+                                        <label for="names">BoardFileName</label>
+                                    </div> --%>
+                                    
+                                    <!-- 배열처럼 표기하면 될까? 가능. 동적으로 만들고싶으면 c:forEach 쓰고 var로 순서맞추면 될거같음 -->
+                                    <!-- index 번호에 빈것들은 null이 들어간다.(0부터 시작) 주의 // 파일이 있는거만 꺼내고 싶으면 if문으로 fileVO가 있는거만 꺼내오는 식으로 한다 -->
+                                    <!-- 같은 index 번호를 넣으면 fileName이 여러개가 들어간다. -->
+                                    <div class="form-floating mb-3">
+                                        <form:input path="boardFileVOs[0].fileName" id="filenames" cssClass="form-control"/>
+                                        <label for="filenames">BoardFileName</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <form:input path="boardFileVOs[1].fileName" id="filenames" cssClass="form-control"/>
+                                        <label for="filenames">BoardFileName</label>
+                                    </div>
+                                    
                                     <!-- Contents input-->
                                     <div class="form-floating mb-3">
                                         <textarea class="form-control" id="contents" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required" name="contents"></textarea>

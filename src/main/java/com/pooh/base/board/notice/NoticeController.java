@@ -115,6 +115,21 @@ public class NoticeController {
 		//jsp에서 입력받는 파라미터 이름과 매개변수 이름을 같게 해야 데이터를 받는다.
 		ModelAndView mv = new ModelAndView();
 		
+		//이게 될까? 시리즈
+		//BoardVO 안의 SubVO 안에 있는 subName에 바로 입력이 가능할까? -> OK
+		log.error("============= {} ============", boardVO.getSubVO().getSubName());
+		
+		//BoardVO 안의 String[] names에 배열로 값을 받아올 수 있을까? -> OK
+		//BoardVO 안의 List<String> 리스트로 값을 받아올 수 있을까? -> OK
+		for(String n : boardVO.getNames()) {
+			log.error("============= {} ============", n);
+		}
+		
+		//파일도 될까?
+		for(BoardFileVO boardFileVO : boardVO.getBoardFileVOs()) {
+			log.error("============= {} ============", boardFileVO.getFileName());
+		}
+		
 		//선 - 검증
 		if(bindingResult.hasErrors()) {
 			//에러들을 가지고 있다면(= 검증에 실패한 데이터가 있다면)
