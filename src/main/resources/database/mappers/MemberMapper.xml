@@ -50,7 +50,43 @@
 		SELECT * FROM MEMBER WHERE USERNAME=#{userName}
 	</select>
 	
-
+	
+	
+	<!-- 아래는 Schedule 수업에 사용한 SQL -->
+	<!-- getMemberList -->
+	<select id="getMemberList" resultType="MemberVO">
+		SELECT USERNAME FROM MEMBER
+	</select>
+	 
+	<!-- setLogoutTime -->
+	<update id="setLogoutTime" parameterType="MemberVO">
+		UPDATE MEMBER SET LASTTIME=now()
+		WHERE USERNAME=#{userName}
+	</update>
+	
+	<!-- getTimeDiff - 로그인 한지 3일 지났는지 체크 -->
+	<select id="getTimeDiff" parameterType="MemberVO" resultType="Long">
+		SELECT TIMESTAMPDIFF(day, (SELECT LASTTIME FROM MEMBER WHERE USERNAME=#{userName}), now())
+	</select>
+	
+	<!-- setEnabledValue0 - 3일 지났으면 enabled 값을 0으로 바꾸기 -->
+	<update id="setEnabledValue0" parameterType="MemberVO">
+		UPDATE MEMBER SET ENABLED=0
+		WHERE USERNAME=#{userName}
+	</update>
+	
+	<!-- setEnabledValue1 - 3일 안지났으면 enabled 값을 1로 바꾸기 -->
+	<update id="setEnabledValue1" parameterType="MemberVO">
+		UPDATE MEMBER SET ENABLED=1
+		WHERE USERNAME=#{userName}
+	</update>
+	
+	<!-- 생일인 사람을 찾아서 공지사항에 축하글 쓰기 -->
+	<!-- 생일인 사람 찾기 -->
+	<select id="getBirthdayMember" resultType="MemberVO">
+		SELECT NAME, EMAIL FROM MEMBER
+		WHERE DATE_FORMAT(BIRTH, '%m%d') = DATE_FORMAT(NOW(), '%m%d');
+	</select>
 
 
 </mapper>

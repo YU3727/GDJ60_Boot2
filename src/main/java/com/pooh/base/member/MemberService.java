@@ -1,6 +1,7 @@
 package com.pooh.base.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,12 @@ public class MemberService {
 	}
 	
 	
+	//logout
+	public int setLogoutTime(MemberVO memberVO) throws Exception{
+		return memberDAO.setLogoutTime(memberVO);
+	}
+	
+	
 	//join
 	public int setJoin(MemberVO memberVO) throws Exception{
 		//순서 : 1.입력된 정보 db에 insert, 2.입력된 정보에 기본 회원등급 member 추가해주기, 3.enabled 기본값 입력(true)
@@ -99,4 +106,5 @@ public class MemberService {
 		
 		return idCheck;
 	}
+	
 }

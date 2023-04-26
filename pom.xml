@@ -18,6 +18,11 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!-- SpringBoot mailService -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-mail</artifactId>
+	    </dependency>
 		<!-- Spring Form 검증 -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>

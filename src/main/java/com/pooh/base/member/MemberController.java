@@ -61,7 +61,12 @@ public class MemberController {
 	public ModelAndView getLogout(HttpSession session) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		
+		//logout 시간 DB에 입력하기
+		MemberVO memberVO = (MemberVO)session.getAttribute("member");
+		int result = memberService.setLogoutTime(memberVO);
+		
 		session.invalidate();
+		
 		mv.setViewName("redirect:../");
 		
 		return mv;
