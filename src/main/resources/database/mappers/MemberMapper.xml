@@ -7,7 +7,7 @@
 
 	<!-- getLogin -->
 	<select id="getLogin" parameterType="MemberVO" resultMap="getLoginResult">
-		SELECT M.USERNAME, M.EMAIL, R.NUM, R.ROLENAME
+		SELECT M.USERNAME, M.PASSWORD, M.EMAIL, R.NUM, R.ROLENAME
 		FROM MEMBER M
 			INNER JOIN
 			MEMBER_ROLE MR
@@ -15,16 +15,15 @@
 			INNER JOIN
 			ROLE R
 			ON(MR.NUM=R.NUM)
-		WHERE M.USERNAME=#{userName} AND M.PASSWORD=#{password}
+		WHERE M.USERNAME=#{username}
 	</select>
 	<!-- resultMap의 type은 최종 리턴타입이라고 생각 -->
 	<resultMap type="MemberVO" id="getLoginResult">
-		<id property="userName" column="USERNAME"/>
+		<id property="username" column="USERNAME"/>
 		<result property="password" column="PASSWORD"/>
 		<result property="name" column="NAME"/>
 		<result property="email" column="EMAIL"/>
 		<result property="birth" column="BIRTH"/>
-		<result property="enabled" column="ENABLED"/>
 		
 		<collection property="roleVOs" javaType="List" ofType="RoleVO">
 			<id property="num" column="NUM"/>
@@ -35,19 +34,19 @@
 	<!-- setJoin -->
 	<insert id="setJoin" parameterType="MemberVO">
 		INSERT INTO MEMBER(USERNAME, PASSWORD, NAME, EMAIL, BIRTH, ENABLED)
-		VALUES(#{userName}, #{password}, #{name}, #{email}, #{birth}, #{enabled})
+		VALUES(#{username}, #{password}, #{name}, #{email}, #{birth}, 1)
 	</insert>
 	
 	<!-- setBasicRole -->
 	<!-- 기본 member 등급이 3번 / Map을 사용하려면 key를 알아야한다. MemberVO를 사용해도 되긴함. -->
 	<insert id="setBasicRole" parameterType="Map">
 		INSERT INTO MEMBER_ROLE(USERNAME, NUM)
-		VALUES(#{userName}, #{num})
+		VALUES(#{username}, #{num})
 	</insert>
 	
 	<!-- idDuplicateCheck -->
 	<select id="idDuplicateCheck" parameterType="MemberVO" resultType="MemberVO">
-		SELECT * FROM MEMBER WHERE USERNAME=#{userName}
+		SELECT * FROM MEMBER WHERE USERNAME=#{username}
 	</select>
 	
 	
@@ -61,24 +60,24 @@
 	<!-- setLogoutTime -->
 	<update id="setLogoutTime" parameterType="MemberVO">
 		UPDATE MEMBER SET LASTTIME=now()
-		WHERE USERNAME=#{userName}
+		WHERE USERNAME=#{username}
 	</update>
 	
 	<!-- getTimeDiff - 로그인 한지 3일 지났는지 체크 -->
 	<select id="getTimeDiff" parameterType="MemberVO" resultType="Long">
-		SELECT TIMESTAMPDIFF(day, (SELECT LASTTIME FROM MEMBER WHERE USERNAME=#{userName}), now())
+		SELECT TIMESTAMPDIFF(day, (SELECT LASTTIME FROM MEMBER WHERE USERNAME=#{username}), now())
 	</select>
 	
 	<!-- setEnabledValue0 - 3일 지났으면 enabled 값을 0으로 바꾸기 -->
 	<update id="setEnabledValue0" parameterType="MemberVO">
 		UPDATE MEMBER SET ENABLED=0
-		WHERE USERNAME=#{userName}
+		WHERE USERNAME=#{username}
 	</update>
 	
 	<!-- setEnabledValue1 - 3일 안지났으면 enabled 값을 1로 바꾸기 -->
 	<update id="setEnabledValue1" parameterType="MemberVO">
 		UPDATE MEMBER SET ENABLED=1
-		WHERE USERNAME=#{userName}
+		WHERE USERNAME=#{username}
 	</update>
 	
 	<!-- 생일인 사람을 찾아서 공지사항에 축하글 쓰기 -->
@@ -87,6 +86,18 @@
 		SELECT NAME, EMAIL FROM MEMBER
 		WHERE DATE_FORMAT(BIRTH, '%m%d') = DATE_FORMAT(NOW(), '%m%d');
 	</select>
+	
+	<!-- getFindPassword -->
+	<!-- ID, EMAIL 입력해서 일치하는 멤버 찾기 -->
+	<select id="getFindPassword" parameterType="MemberVO" resultType="MemberVO">
+		SELECT * FROM MEMBER WHERE USERNAME=#{username} AND EMAIL=#{email}
+	</select>
+	
+	<!-- setTempPassword -->
+	<!-- ID, EMAIL 일치하는 멤버 임시비밀번호로 DB에 update -->
+	<update id="setTempPassword" parameterType="MemberVO">
+		UPDATE MEMBER SET PASSWORD=#{password} WHERE USERNAME=#{username}
+	</update>
 
 
 </mapper>

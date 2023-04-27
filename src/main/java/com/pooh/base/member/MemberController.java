@@ -1,12 +1,16 @@
 package com.pooh.base.member;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,25 +40,26 @@ public class MemberController {
 		return mv;
 	}
 	
+	//Spring Security를 사용하면 이걸 더 이상 사용하지 않는다. 내장되어있는 것을 사용함.(service의 loadUserByUsername)
 	//Login - post
-	@PostMapping("login")
-	public ModelAndView getLogin(MemberVO memberVO, HttpSession session) throws Exception{
-		//로그인 성공하면 담을 세션도 준비.
-		ModelAndView mv = new ModelAndView();
-		
-		memberVO = memberService.getLogin(memberVO);
-		
-		mv.setViewName("redirect:./login");
-		
-		//id, pw가 일치하지 않아서 조회를 못했다면 memberVO에 null이 들어가있음.
-		if(memberVO != null) {
-			//로그인 성공시 로그인 정보를 session에 보관. 속성명 member
-			session.setAttribute("member", memberVO);
-			mv.setViewName("redirect:../");
-		}
-		
-		return mv;
-	}
+//	@PostMapping("login")
+//	public ModelAndView getLogin(MemberVO memberVO, HttpSession session) throws Exception{
+//		//로그인 성공하면 담을 세션도 준비.
+//		ModelAndView mv = new ModelAndView();
+//		
+//		memberVO = memberService.getLogin(memberVO);
+//		
+//		mv.setViewName("redirect:./login");
+//		
+//		//id, pw가 일치하지 않아서 조회를 못했다면 memberVO에 null이 들어가있음.
+//		if(memberVO != null) {
+//			//로그인 성공시 로그인 정보를 session에 보관. 속성명 member
+//			session.setAttribute("member", memberVO);
+//			mv.setViewName("redirect:../");
+//		}
+//		
+//		return mv;
+//	}
 		
 	//logout
 	@GetMapping("logout")
@@ -150,6 +155,59 @@ public class MemberController {
 		
 	}
 	
+	//test용
+	@GetMapping("info")
+	public void info(HttpSession session) {
+		log.error("=============== login info ===============");
+		
+		//속성이 어떤 이름으로 들어왔는지 알아보고자 할때 이런 방법을 사용.
+//		Enumeration<String> names = session.getAttributeNames();
+//		//반복문이 몇번 돌아야하는지 모른다. -> for문을 돌릴수 없음, while로
+//		while(names.hasMoreElements()) {
+//			log.error("====== {} ======", names.nextElement());
+//		}
+		
+		//위의 작업을 통해 session에 들어가있는 정보의 속성명이 'SPRING_SECURITY_CONTEXT'임을 알게됨.
+		Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
+		
+		log.error("======= {} =======", obj);
+		
+		//꺼내본 결과로 SecurityContextImpl 타입이 나옴
+		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
+		Authentication authentication = contextImpl.getAuthentication();
+		
+		log.error("======= name: {} =======", authentication.getName());
+		log.error("======= details: {} =======", authentication.getDetails());
+		log.error("======= principal: {} =======", authentication.getPrincipal());
+		log.error("======= authorities: {} =======", authentication.getAuthorities());
+		
+	}
 	
 	
+	//findPassword - get
+	@GetMapping("findPassword")
+	public ModelAndView getFindPassword() throws Exception{
+		ModelAndView mv = new ModelAndView();
+		
+		mv.setViewName("member/findPassword");
+		return mv;
+	}
+	
+	
+	//findPassword - post
+	@PostMapping("findPassword")
+	public ModelAndView getFindPassword(MemberVO memberVO) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		
+		int result = memberService.getFindPassword(memberVO);
+		
+		mv.setViewName("member/findPassword");
+		
+		//result가 1이면 임시비번발급, 메일발송 성공, 0이면 실패
+		if(result>0) {
+			mv.setViewName("member/login");
+		}
+		
+		return mv;
+	}
 }

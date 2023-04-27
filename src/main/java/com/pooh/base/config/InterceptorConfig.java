@@ -57,6 +57,6 @@ public class InterceptorConfig implements WebMvcConfigurer{
 //					
 //					
 //					;
-		
+		//memberCheck, adminCheck는 이제 Security에서 하게 된다.
 	}
 }

@@ -43,4 +43,10 @@ public interface MemberDAO {
 	
 	//생일인 사람 글쓰기
 	public int setBirthNotice(String names) throws Exception;
+	
+	//ID, EMAIL 일치하는 사람 조회
+	public MemberVO getFindPassword(MemberVO memberVO) throws Exception;
+	
+	//임시 비밀번호 업데이트
+	public int setTempPassword(MemberVO memberVO) throws Exception;
 }

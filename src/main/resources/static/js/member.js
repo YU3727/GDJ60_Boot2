@@ -28,3 +28,14 @@
         $('#loginForm').submit();
     }
  }
+
+
+ //비밀번호 찾기 창에서 되돌아가기
+ $('#findBackBtn').click(function(){
+    location.href="/member/login";
+ })
+
+ //비밀번호 찾기 정보 보내기
+ $('#findBtn').click(function(){
+    $('#findForm').submit();
+ })

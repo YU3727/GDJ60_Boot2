@@ -18,7 +18,7 @@ class MemberDAOTest {
 	@Test
 	public void idDulpicateCheck() throws Exception{
 		MemberVO memberVO = new MemberVO();
-		memberVO.setUserName("id2");
+		memberVO.setUsername("id2");
 		
 		memberVO = memberDAO.idDuplicateCheck(memberVO);
 		if(memberVO == null) {

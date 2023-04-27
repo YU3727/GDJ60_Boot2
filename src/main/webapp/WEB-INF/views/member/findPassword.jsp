@@ -26,8 +26,8 @@
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
                         <div class="text-center mb-5">
                             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-                            <h1 class="fw-bolder">Are you ready?</h1>
-                            <p class="lead fw-normal text-muted mb-0">We've been wating for you</p>
+                            <h1 class="fw-bolder">May I help you?</h1>
+                            <p class="lead fw-normal text-muted mb-0">Find your password</p>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
@@ -38,30 +38,24 @@
                                 <!-- To make this form functional, sign up at-->
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
-                                <form action="./login" id="loginForm" method="post" data-sb-form-api-token="API_TOKEN">
+                                <form action="./findPassword" id="findForm" method="post" data-sb-form-api-token="API_TOKEN">
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">
                                         <input name="username" class="form-control" id="username" type="text" data-sb-validations="required" />
                                         <label for="username">USERNAME</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">username is required.</div>
                                     </div>
-                                    <!-- password input-->
+                                    <!-- email input-->
                                     <div class="form-floating mb-3">
-                                        <input name="password" class="form-control" id="password" type="password" data-sb-validations="required" />
-                                        <label for="password">PASSWORD</label>
-                                        <div class="invalid-feedback" data-sb-feedback="phone:required">password is required.</div>
+                                        <input name="email" class="form-control" id="email" type="text" data-sb-validations="required" />
+                                        <label for="email">EMAIL</label>
                                     </div>
-                                    <!-- Login btn -->
+                                    <!-- find btn -->
                                     <div class="d-flex justify-content-between form-floating mb-3">
-                                        <button type="button" id="loginBackBtn" class="feature bg-danger bg-gradient text-white rounded-3">X</button>   
-                                        <button type="button" id="loginBtn" class="feature bg-primary bg-gradient text-white rounded-3">O</button>
+                                        <button type="button" id="findBackBtn" class="btn btn-danger">돌아가기</button>   
+                                        <button type="button" id="findBtn" class="btn btn-primary">찾기</button>
                                     </div>
                                 </form>
                                 
-                                <div class="d-flex justify-content-center">
-                                <a href="./findPassword">비밀번호 찾기</a>
-                                <!-- id, email 입력창 확인 -->                       
-                                </div>
                             </div>
                         </div>
                     </div>

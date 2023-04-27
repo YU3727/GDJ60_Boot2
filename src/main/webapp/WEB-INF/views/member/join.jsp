@@ -44,9 +44,9 @@
                                 	<!-- required는 html5에서만 동작하므로, 사용자의 환경이 html5가 아닌 경우 검증할 수 없다. 그래서 JavaScript로 다시 체크를 한다. -->
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">
-                                    	<form:input path="userName" id="userName" cssClass="form-control"/>
-                                        <form:label path="userName">USERNAME</form:label>
-                                        <form:errors path="userName"></form:errors>
+                                    	<form:input path="username" id="username" cssClass="form-control"/>
+                                        <form:label path="username">USERNAME</form:label>
+                                        <form:errors path="username"></form:errors>
                                     </div>
                                     <!-- password input-->
                                     <div class="form-floating mb-3">
