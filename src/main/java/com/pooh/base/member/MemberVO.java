@@ -34,7 +34,7 @@ public class MemberVO implements UserDetails{
 	@Past
 	private Date birth;
 	//boolean으로 선언하면 bit(1)의 값 0과 1이 자동으로 false, true로 전환된다
-	//private boolean enabled;
+	private boolean enabled;
 	private Date lastTime;
 	
 	private List<RoleVO> roleVOs;
@@ -98,9 +98,7 @@ public class MemberVO implements UserDetails{
 		//계정의 사용 여부
 		//true : 계정 활성화
 		//false : 계정 비활성화 -> 로그인 안됨
-		return true;
+		return this.enabled;
 	}
-	
-	
 	
 }

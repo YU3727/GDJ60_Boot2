@@ -38,6 +38,13 @@
                                 <!-- To make this form functional, sign up at-->
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
+                                
+                                <!-- 로그인에 실패했을 경우 -->
+                                <!-- 파라미터를 jsp에서도 바로 꺼낼 수 있다. param.~ -->
+                                <c:if test="${not empty param.errorMessage}">
+                                	<h1>${param.errorMessage}</h1>
+                                </c:if>
+                                
                                 <form action="./login" id="loginForm" method="post" data-sb-form-api-token="API_TOKEN">
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">

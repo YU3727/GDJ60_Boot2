@@ -11,6 +11,7 @@ import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	
 	//Login - get
@@ -166,6 +170,27 @@ public class MemberController {
 	//**Spring Security가 사용하는 session에는 뭐가 들어있을까?
 	@GetMapping("info")
 	public void info(HttpSession session) {
+		
+		String pw = "user01";
+		
+		MemberVO memberVO = (MemberVO)memberService.loadUserByUsername(pw);
+		
+		//같은 pw값을 넣었지만 hash값이 다르게 나오고, 같은지 비교하는 결과는 false가 뜬다. 이걸 어떻게 해결하지?
+		log.error("::::: {} ::::::", memberVO.getPassword());
+		log.error("::::: {} ::::::", passwordEncoder.encode(pw));
+		log.error("::::: {} ::::::", memberVO.getPassword().equals(passwordEncoder.encode(pw)));
+		
+		//이렇게 하면 true가 뜬다.
+		//패스워드를 비교하고싶으면, 인코딩 전 패스워드(rawPw)와 인코딩 후 패스워드(encodedPw)를 비교해야한다.
+		//비교를 할 때 passwordEncoder클래스 내에 포함된 matchs라는 메서드를 사용해야한다.
+		boolean check = passwordEncoder.matches(pw, memberVO.getPassword());
+		log.error("::::: {} ::::::", check);
+		
+		
+		
+		
+		
+		///////////////////////////////////////////////
 		log.error("=============== login info ===============");
 		
 		//속성이 어떤 이름으로 들어왔는지 알아보고자 할때 이런 방법을 사용.
@@ -174,20 +199,20 @@ public class MemberController {
 //		while(names.hasMoreElements()) {
 //			log.error("====== {} ======", names.nextElement());
 //		}
-		
-		//위의 작업을 통해 session에 들어가있는 정보의 속성명이 'SPRING_SECURITY_CONTEXT'임을 알게됨.
-		Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
-		
-		log.error("======= {} =======", obj);
-		
-		//꺼내본 결과로 SecurityContextImpl 타입이 나옴
-		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
-		Authentication authentication = contextImpl.getAuthentication();
-		
-		log.error("======= username: {} =======", authentication.getName());
-		log.error("======= details: {} =======", authentication.getDetails());
-		log.error("======= MemberVO: {} =======", authentication.getPrincipal());
-		log.error("======= authorities: {} =======", authentication.getAuthorities());
+	
+//		//위의 작업을 통해 session에 들어가있는 정보의 속성명이 'SPRING_SECURITY_CONTEXT'임을 알게됨.
+//		Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
+//		
+//		log.error("======= {} =======", obj);
+//		
+//		//꺼내본 결과로 SecurityContextImpl 타입이 나옴
+//		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
+//		Authentication authentication = contextImpl.getAuthentication();
+//		
+//		log.error("======= username: {} =======", authentication.getName());
+//		log.error("======= details: {} =======", authentication.getDetails());
+//		log.error("======= MemberVO: {} =======", authentication.getPrincipal());
+//		log.error("======= authorities: {} =======", authentication.getAuthorities());
 		
 	}
 	

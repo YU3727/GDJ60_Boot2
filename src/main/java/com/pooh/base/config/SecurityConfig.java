@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.pooh.base.security.UserLoginFailureHandler;
 import com.pooh.base.security.UserLogoutSuccessHandler;
 import com.pooh.base.security.UserSuccessHandler;
 
@@ -38,6 +39,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
 		httpSecurity
+			//cors, csrf를 disable 함.
 				.cors()
 				.and()
 				.csrf()
@@ -48,7 +50,7 @@ public class SecurityConfig {
 				.antMatchers("/member/join").permitAll()
 				//일단은 루트 페이지를 허용한 이후에 제한을 한다. (위까진 허용, 아래부터 제한)
 				//Interceptor와 마찬가지로 순서가 중요하다. 위에서부터 아래로 걸러짐
-				.antMatchers("/notice/add").hasRole("ADMIN") //interceptor에서 하던걸 해줌. 단, DB에서 역할이름을 ROLE_ADMIN 식으로 입력해둬야함
+				.antMatchers("/notice/add").hasRole("MEMBER") //interceptor에서 하던걸 해줌. 단, DB에서 역할이름을 ROLE_ADMIN 식으로 입력해둬야함
 				.antMatchers("/notice/update").hasRole("ADMIN")
 				.antMatchers("/notice/delete").hasRole("ADMIN")
 				.antMatchers("/notice/*").permitAll()
@@ -65,7 +67,8 @@ public class SecurityConfig {
 				.loginPage("/member/login")
 				//.defaultSuccessUrl("/")
 				.successHandler(new UserSuccessHandler()) //로그인 성공시 수행할 작업 - 객체를 만드는 또다른 방법(일회용): new 생성자
-				.failureUrl("/member/login")
+				//.failureUrl("/member/login")
+				.failureHandler(new UserLoginFailureHandler()) //로그인 실패시 수행할 작업
 				.permitAll() //login url 허용
 				.and()
 				
