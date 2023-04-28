@@ -50,7 +50,7 @@ public class SecurityConfig {
 				.antMatchers("/member/join").permitAll()
 				//일단은 루트 페이지를 허용한 이후에 제한을 한다. (위까진 허용, 아래부터 제한)
 				//Interceptor와 마찬가지로 순서가 중요하다. 위에서부터 아래로 걸러짐
-				.antMatchers("/notice/add").hasRole("MEMBER") //interceptor에서 하던걸 해줌. 단, DB에서 역할이름을 ROLE_ADMIN 식으로 입력해둬야함
+				.antMatchers("/notice/add").hasRole("ADMIN") //interceptor에서 하던걸 해줌. 단, DB에서 역할이름을 ROLE_ADMIN 식으로 입력해둬야함
 				.antMatchers("/notice/update").hasRole("ADMIN")
 				.antMatchers("/notice/delete").hasRole("ADMIN")
 				.antMatchers("/notice/*").permitAll()
