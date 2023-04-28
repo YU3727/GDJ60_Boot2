@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.pooh.base.security.UserLogoutSuccessHandler;
+import com.pooh.base.security.UserSuccessHandler;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -60,13 +63,16 @@ public class SecurityConfig {
 				//개발자가 만든 login form을 쓰고싶으면 아래 내용 입력
 				//기본 파라미터 이름과 다른 파라미터를 사용하면 입력해줘야함.(username, password가 기본)
 				.loginPage("/member/login")
-				.defaultSuccessUrl("/")
+				//.defaultSuccessUrl("/")
+				.successHandler(new UserSuccessHandler()) //로그인 성공시 수행할 작업 - 객체를 만드는 또다른 방법(일회용): new 생성자
 				.failureUrl("/member/login")
 				.permitAll() //login url 허용
 				.and()
+				
 			.logout()
 				.logoutUrl("/member/logout")
-				.logoutSuccessUrl("/")
+				//.logoutSuccessUrl("/")
+				.logoutSuccessHandler(new UserLogoutSuccessHandler()) //로그아웃 성공시 수행할 작업
 				.invalidateHttpSession(true) //true값을 넣어야 세션을 만료시킴
 				.deleteCookies("JSESSIONID") //JSESSIONID라는 이름을 가진 쿠키를 삭제
 				.permitAll() //logout url 허용

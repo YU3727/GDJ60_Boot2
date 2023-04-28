@@ -41,16 +41,22 @@
                                 <form action="./login" id="loginForm" method="post" data-sb-form-api-token="API_TOKEN">
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">
-                                        <input name="username" class="form-control" id="username" type="text" data-sb-validations="required" />
+                                        <input name="username" class="form-control" id="username" value="${cookie.remember.value}" type="text" data-sb-validations="required" />
                                         <label for="username">USERNAME</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">username is required.</div>
                                     </div>
+                                    
                                     <!-- password input-->
                                     <div class="form-floating mb-3">
                                         <input name="password" class="form-control" id="password" type="password" data-sb-validations="required" />
                                         <label for="password">PASSWORD</label>
-                                        <div class="invalid-feedback" data-sb-feedback="phone:required">password is required.</div>
                                     </div>
+                                    
+                                    <!-- password input-->
+                                    <div class="mb-3">
+                                        <input name="remember" class="" id="remember" value="remember" type="checkbox" data-sb-validations="required" />
+                                        <label for="remember">ID 기억하기</label>
+                                    </div>
+                                    
                                     <!-- Login btn -->
                                     <div class="d-flex justify-content-between form-floating mb-3">
                                         <button type="button" id="loginBackBtn" class="feature bg-danger bg-gradient text-white rounded-3">X</button>   

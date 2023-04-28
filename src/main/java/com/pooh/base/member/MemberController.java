@@ -33,10 +33,18 @@ public class MemberController {
 	
 	//Login - get
 	@GetMapping("login")
-	public ModelAndView getLogin() throws Exception{
+	public ModelAndView getLogin(HttpSession session) throws Exception{
 		ModelAndView mv = new ModelAndView();
 	
 		mv.setViewName("member/login");
+		
+		//로그인 되어있는 경우, 로그인페이지로 보내지 않고 다른페이지로 보내고 싶을때는 어떻게 할까?
+		//로그인 여부를 판별하기 위해 session을 매개변수로 받아와서 작업한다.
+		 Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
+		 if(obj!=null) {
+			 mv.setViewName("redirect:/");
+		 }
+		 
 		return mv;
 	}
 	
@@ -155,7 +163,7 @@ public class MemberController {
 		
 	}
 	
-	//test용
+	//**Spring Security가 사용하는 session에는 뭐가 들어있을까?
 	@GetMapping("info")
 	public void info(HttpSession session) {
 		log.error("=============== login info ===============");
@@ -176,9 +184,9 @@ public class MemberController {
 		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
 		Authentication authentication = contextImpl.getAuthentication();
 		
-		log.error("======= name: {} =======", authentication.getName());
+		log.error("======= username: {} =======", authentication.getName());
 		log.error("======= details: {} =======", authentication.getDetails());
-		log.error("======= principal: {} =======", authentication.getPrincipal());
+		log.error("======= MemberVO: {} =======", authentication.getPrincipal());
 		log.error("======= authorities: {} =======", authentication.getAuthorities());
 		
 	}
