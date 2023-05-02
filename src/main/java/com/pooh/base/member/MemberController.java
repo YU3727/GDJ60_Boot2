@@ -9,16 +9,24 @@ import javax.validation.Valid;
 
 import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +41,9 @@ public class MemberController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+	private String adminKey;
 	
 	
 	//Login - get
@@ -72,22 +83,35 @@ public class MemberController {
 //		
 //		return mv;
 //	}
-		
+	
+	
+	//Spring Security를 적용 후에는 logout도 Security에서 한다.
 	//logout
-	@GetMapping("logout")
-	public ModelAndView getLogout(HttpSession session) throws Exception{
-		ModelAndView mv = new ModelAndView();
-		
-		//logout 시간 DB에 입력하기
-		MemberVO memberVO = (MemberVO)session.getAttribute("member");
-		int result = memberService.setLogoutTime(memberVO);
-		
-		session.invalidate();
-		
-		mv.setViewName("redirect:../");
-		
-		return mv;
-	}
+//	@GetMapping("logout")
+//	public ModelAndView getLogout(HttpSession session) throws Exception{
+//		ModelAndView mv = new ModelAndView();
+//		
+//		//logout 시간 DB에 입력하기
+//		MemberVO memberVO = (MemberVO)session.getAttribute("member");
+//		int result = memberService.setLogoutTime(memberVO);
+//		
+//		session.invalidate();
+//		
+//		mv.setViewName("redirect:../");
+//		
+//		return mv;
+//	}
+	
+	
+	//socialLogout할 때 정보를 받아오는 컨트롤러 - 일단 주석처리
+//	@GetMapping("socialLogout")
+//	public ModelAndView getLogout(HttpSession session) throws Exception{
+//		ModelAndView mv = new ModelAndView();
+//		
+//		mv.setViewName("redirect:../");
+//		
+//		return mv;
+//	}
 	
 	//join - get
 	@GetMapping("join")
@@ -188,8 +212,6 @@ public class MemberController {
 		
 		
 		
-		
-		
 		///////////////////////////////////////////////
 		log.error("=============== login info ===============");
 		
@@ -243,4 +265,50 @@ public class MemberController {
 		
 		return mv;
 	}
+	
+	
+	//연결 끊기
+	@GetMapping("delete")
+	public String delete() throws Exception{
+		//카카오 개발자센터 - 카카오 로그인 - 연결 끊기 부분
+		
+		//소셜 로그인한 사람이 탈퇴를 원하는지, 사이트에 직접 가입한 로컬 회원이 탈퇴를 원하는지 구분이 필요하다.
+		//회원 가입 방법의 구분이 필요함. -> 회원 컬럼에 로컬가입인지 소셜가입인지 체크하는 컬럼이 필요할듯 하다.
+		//작업 자체는 서비스에서 해도 됨. 어디서 할거냐는 개발자의 선택
+		
+		MemberVO memberVO = (MemberVO)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		this.kakaoDelete(memberVO);
+		
+		//이렇게 해놨더니 로그아웃을 안해준다. 어떻게 해야할까?
+		//리턴타입을 void에서 String으로 바꾸고, 리턴값을 줘보자.
+		return "redirect:./logout";
+	}
+	
+	
+	//kakaoDelete
+	
+	private void kakaoDelete(MemberVO memberVO) throws Exception{
+		//RestTemplate 사용
+		RestTemplate restTemplate = new RestTemplate();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK "+adminKey);
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED); //post
+		
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("target_id_type", "user_id");
+		params.add("target_id", memberVO.getAttributes().get("id").toString());
+		
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+		
+		//설정한 것들을 restTemplate에 담아 보낸다.
+		//uri는 문서참고, return은 사용자 id가 올 것이므로, String.class
+		String id = restTemplate.postForObject("https://kapi.kakao.com/v1/user/unlink", request, String.class);
+		
+		log.error(":: Delete : {} :::::", id);
+		
+	}
+	
+	
 }

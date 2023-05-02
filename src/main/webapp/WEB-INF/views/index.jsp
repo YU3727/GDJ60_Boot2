@@ -56,7 +56,9 @@
                         		<!-- arguments는 매개변수이고, argumentSeparator는 매개변수의 구분자이다. -->
                         		<spring:message code="loginSuccess" text="없는 메시지" arguments="${member.userName},${member.name}" argumentSeparator=","></spring:message>
                         		
-                        		<sec:authorize access="isAuthenticated()">로그인 성공</sec:authorize>
+                        		<sec:authorize access="isAuthenticated()">
+                        			로그인 성공 : <sec:authentication property="name"/>
+                        		</sec:authorize>
                         		<sec:authorize access="!isAuthenticated()">로그인 전</sec:authorize>
                         	
                         	</h2>

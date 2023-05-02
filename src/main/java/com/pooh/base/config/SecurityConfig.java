@@ -1,21 +1,37 @@
 package com.pooh.base.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import com.pooh.base.member.MemberService;
+import com.pooh.base.member.MemberSocialService;
 import com.pooh.base.security.UserLoginFailureHandler;
+import com.pooh.base.security.UserLogoutHandler;
 import com.pooh.base.security.UserLogoutSuccessHandler;
 import com.pooh.base.security.UserSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	//Spring에서 Annotation으로 객체를 만든것이 아니므로, autowired를 사용할 수 없다.
+	@Autowired
+	private UserLogoutSuccessHandler userLogoutSuccessHandler;
+	
+	@Autowired
+	private UserLogoutHandler userLogoutHandler;
+	
+	@Autowired
+	private MemberSocialService memberSocialService;
 
 	@Bean
 	//public을 선언하면 default로 바꾸라는 메시지가 출력된다.
@@ -39,18 +55,20 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
 		httpSecurity
-			//cors, csrf를 disable 함.
+			//csrf만 활성화 하고 테스트
 				.cors()
+//				.disable()
 				.and()
 				.csrf()
 				.disable()
+				
 			.authorizeRequests()
 				//url과 권한을 적용하는 부분
 				.antMatchers("/").permitAll()
 				.antMatchers("/member/join").permitAll()
 				//일단은 루트 페이지를 허용한 이후에 제한을 한다. (위까진 허용, 아래부터 제한)
 				//Interceptor와 마찬가지로 순서가 중요하다. 위에서부터 아래로 걸러짐
-				.antMatchers("/notice/add").hasRole("MEMBER") //interceptor에서 하던걸 해줌. 단, DB에서 역할이름을 ROLE_ADMIN 식으로 입력해둬야함
+				.antMatchers("/notice/add").hasRole("ADMIN") //interceptor에서 하던걸 해줌. 단, DB에서 역할이름을 ROLE_ADMIN 식으로 입력해둬야함
 				.antMatchers("/notice/update").hasRole("ADMIN")
 				.antMatchers("/notice/delete").hasRole("ADMIN")
 				.antMatchers("/notice/*").permitAll()
@@ -75,10 +93,22 @@ public class SecurityConfig {
 			.logout()
 				.logoutUrl("/member/logout")
 				//.logoutSuccessUrl("/")
-				.logoutSuccessHandler(new UserLogoutSuccessHandler()) //로그아웃 성공시 수행할 작업
+				//.addLogoutHandler(userLogoutHandler)
+				.logoutSuccessHandler(userLogoutSuccessHandler) //로그아웃 성공시 수행할 작업
 				.invalidateHttpSession(true) //true값을 넣어야 세션을 만료시킴
 				.deleteCookies("JSESSIONID") //JSESSIONID라는 이름을 가진 쿠키를 삭제
 				.permitAll() //logout url 허용
+				.and()
+				
+				
+			.oauth2Login()
+				.userInfoEndpoint()
+				.userService(memberSocialService) //서비스 객체를 넣어주면 된다.(DefaultOAuth2UserService 객체)
+				
+			//동시 접속 제한 - 일단 지금은 안되는거같음...
+//			.sessionManagement()
+//				.maximumSessions(1) //최대 허용 가능한 세션의 수, -1 : 세션 허용 수 무제한
+//				.maxSessionsPreventsLogin(false) //false : 이전 사용자의 세션을 만료시킴, true : 새로운 사용자를 인증실패처리
 				
 				
 				
