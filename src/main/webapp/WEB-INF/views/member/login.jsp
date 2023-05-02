@@ -46,6 +46,10 @@
                                 </c:if>
                                 
                                 <form action="./login" id="loginForm" method="post" data-sb-form-api-token="API_TOKEN">
+                                	<!-- 서버에서 발행한 CSRF 토큰을 같이 보내준다. -->
+                                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                	<!-- 또는 Spring Security 태그를 사용하면 된다. -->
+                                	<!-- <sec:csrfInput/> -->
                                     <!-- userName input-->
                                     <div class="form-floating mb-3">
                                         <input name="username" class="form-control" id="username" value="${cookie.remember.value}" type="text" data-sb-validations="required" />
@@ -71,8 +75,9 @@
                                     </div>
                                 </form>
                                 
-                                <div class="d-flex justify-content-center">
-                                <a href="./findPassword">비밀번호 찾기</a>
+                                <div class="d-flex justify-content-evenly">
+                                <a href="./findPassword" class="btn btn-info">비밀번호 찾기</a>
+                                <a href="/oauth2/authorization/kakao" class="btn btn-warning">카카오 로그인</a>
                                 <!-- id, email 입력창 확인 -->                       
                                 </div>
                             </div>
